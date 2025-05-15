@@ -1,6 +1,8 @@
+const { string, required } = require("joi");
 const  mongoose  = require("mongoose");
 
 const playerModal = new mongoose.Schema({
+    playerId : {type : String,required : true},
     name : {type : String, required : true},
     team : {type : String, required : true},
     country : {type : String, required : true},
