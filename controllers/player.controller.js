@@ -18,7 +18,7 @@ const createPlayer = async (req, res, next) => {
     });
     if (!status) {
       return res.json({
-        message: "Player coul'nt Created!",
+        message: "Player could'nt Created!",
       });
     }
     if (status) {
