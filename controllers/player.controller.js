@@ -1,5 +1,4 @@
 const playerModel = require("../models/player.model");
-const playerModal = require("../models/player.model");
 const { v4: uuidv4 } = require("uuid");
 
 const createPlayer = async (req, res, next) => {
@@ -7,7 +6,7 @@ const createPlayer = async (req, res, next) => {
     const { name, team, country, runs, image, role, salary } = req.body;
     // unique player id
     const playerId = uuidv4();
-    const status = await playerModal.create({
+    const status = await playerModel.create({
       playerId: playerId,
       name,
       team,
@@ -44,7 +43,7 @@ const updatePlayer = async (req, res, next) => {
       });
     }
 
-    const playerForUpdate = await playerModal.findOne({ playerId });
+    const playerForUpdate = await playerModel.findOne({ playerId });
     if (!playerForUpdate) {
       return res.json({
         message: "Player not found!",
@@ -113,7 +112,7 @@ const getPlayerDescription = async (req, res, next) => {
         status: 402,
       });
     }
-    const descriptionOfPlayer = await playerModal
+    const descriptionOfPlayer = await playerModel
       .findOne({ playerId })
       .select("-_id");
     if (!descriptionOfPlayer) {
@@ -143,16 +142,32 @@ const filteringAndSorting = async (req, res, next) => {
     // sorting options
     let sortOptions = {};
     const sortBy = req.query.sortBy;
-    const sortOrder = req.query.order == "decs" ? -1 : 1;
+    const sortOrder = req.query.order == "desc" ? -1 : 1;
     if (sortBy == "runs" || sortBy == "salary") {
       sortOptions[sortBy] = sortOrder;
     }
 
-    const result = await playerModal
+    // pagination
+    let pageNumber = req.query.page || 1;
+    let limit = 10;
+
+    let skipData = (pageNumber - 1) * limit;
+
+    const result = await playerModel
       .find(filterOption)
-      .sort(sortBy)
+      .sort(sortOptions)
+      .skip(skipData)
+      .limit(limit)
       .select("-_id");
-    return res.json(result);
+
+    if (!result.length) {
+      return res.json({
+        message: "Data not found!",
+        status: 400,
+      });
+    } else {
+      return res.json(result);
+    }
   } catch (error) {
     next(error);
   }

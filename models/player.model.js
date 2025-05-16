@@ -10,6 +10,6 @@ const playerModal = new mongoose.Schema({
     image : {type : String,required : true},
     role : {type : String, enum : ['Batsman', 'Bowler', 'All-rounder']},
     salary : {type : Number, required : true}
-}, {timeseries : true})
+}, {timestamps : true})
 
 module.exports = mongoose.model("playerModal", playerModal)
