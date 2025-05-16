@@ -1,22 +1,21 @@
-const express = require('express')
-const env = require('dotenv').config()
-const app = express()
-const bodyParser = require('body-parser')
-const connect_db = require('./helpers/db')
-const globalErrorHandler = require('./middleware/errorHandler')
-const playerRoutes = require("./Routes/player.route.js")
+const express = require("express");
+const env = require("dotenv").config();
+const app = express();
+const bodyParser = require("body-parser");
+const connect_db = require("./helpers/db");
+const globalErrorHandler = require("./middleware/errorHandler");
+const playerRoutes = require("./Routes/player.route.js");
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended : true}))
-app.use('/players',playerRoutes);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/players", playerRoutes);
 
+app.use(globalErrorHandler);
 
-
-
-app.use(globalErrorHandler)
-
-const startServer = async()=>{
-  const PORT = process.env.PORT || 8001
-  connect_db().then(()=> app.listen(PORT)).then(()=> console.log(`Server is running at ${PORT}`))
-}
-startServer()
+const startServer = async () => {
+  const PORT = process.env.PORT || 8001;
+  connect_db()
+    .then(() => app.listen(PORT))
+    .then(() => console.log(`Server is running at ${PORT}`));
+};
+startServer();
