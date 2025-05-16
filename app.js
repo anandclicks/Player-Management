@@ -15,7 +15,12 @@ app.use(globalErrorHandler);
 const startServer = async () => {
   const PORT = process.env.PORT || 8001;
   connect_db()
-    .then(() => app.listen(PORT))
-    .then(() => console.log(`Server is running at ${PORT}`));
+    .then(() =>
+      app.listen(PORT, () => console.log(`Server is running at ${PORT}`))
+    )
+    .catch(() => {
+      console.log("DB connection Failed");
+      process.exit(1);
+    });
 };
 startServer();
