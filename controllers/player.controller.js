@@ -68,7 +68,7 @@ const updatePlayer = async (req, res, next) => {
       const updateState = await playerForUpdate.save();
       if (!updateState) {
         return res.json({
-          message: "Player could'nt successfully!",
+          message: "Player could'nt Update!",
           status: 500,
         });
       } else {
