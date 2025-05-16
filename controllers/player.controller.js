@@ -5,9 +5,9 @@ const createPlayer = async (req, res, next) => {
   try {
     const { name, team, country, runs, image, role, salary } = req.body;
     // unique player id
-    const playerId = uuidv4();
+    const id = uuidv4();
     const status = await playerModel.create({
-      playerId: playerId,
+      id: id,
       name,
       team,
       country,
@@ -35,15 +35,15 @@ const createPlayer = async (req, res, next) => {
 
 const updatePlayer = async (req, res, next) => {
   try {
-    const playerId = req.params?.id;
-    if (!playerId) {
+    const id = req.params?.id;
+    if (!id) {
       return res.json({
         message: "Player id is required to update details!",
         status: 403,
       });
     }
 
-    const playerForUpdate = await playerModel.findOne({ playerId });
+    const playerForUpdate = await playerModel.findOne({ id });
     if (!playerForUpdate) {
       return res.json({
         message: "Player not found!",
@@ -84,8 +84,8 @@ const updatePlayer = async (req, res, next) => {
 
 const deletePlayer = async (req, res, next) => {
   try {
-    const playerId = req.params?.id;
-    const playerForDelete = await playerModel.findOneAndDelete({ playerId });
+    const id = req.params?.id;
+    const playerForDelete = await playerModel.findOneAndDelete({ id });
 
     if (!playerForDelete) {
       return res.json({
@@ -105,15 +105,15 @@ const deletePlayer = async (req, res, next) => {
 
 const getPlayerDescription = async (req, res, next) => {
   try {
-    const playerId = req.params.id;
-    if (!playerId) {
+    const id = req.params.id;
+    if (!id) {
       return res.json({
         message: "Player's id is reqired!",
         status: 402,
       });
     }
     const descriptionOfPlayer = await playerModel
-      .findOne({ playerId })
+      .findOne({ id })
       .select("-_id");
     if (!descriptionOfPlayer) {
       return res.json({
@@ -148,7 +148,7 @@ const filteringAndSorting = async (req, res, next) => {
     }
 
     // pagination
-    let pageNumber = req.query.page || 1;
+    let pageNumber = Number(req.query.page || 1);
     let limit = 10;
 
     let skipData = (pageNumber - 1) * limit;
@@ -166,7 +166,12 @@ const filteringAndSorting = async (req, res, next) => {
         status: 400,
       });
     } else {
-      return res.json(result);
+      return res.json({
+        page : pageNumber,
+        limit : limit,
+        total : await playerModel.countDocuments(),
+        players : result
+      });
     }
   } catch (error) {
     next(error);
