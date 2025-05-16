@@ -7,7 +7,7 @@ const createPlayer = async (req, res, next) => {
     // unique player id
     const id = uuidv4();
     const status = await playerModel.create({
-      id: id,
+      id,
       name,
       team,
       country,
@@ -18,7 +18,7 @@ const createPlayer = async (req, res, next) => {
     });
     if (!status) {
       return res.json({
-        message: "Player could'nt Created! please try again",
+        message: "Player couldn't be created! Please try again.",
         status: 500,
       });
     }
@@ -38,7 +38,7 @@ const updatePlayer = async (req, res, next) => {
     const id = req.params?.id;
     if (!id) {
       return res.json({
-        message: "Player's id is required to update details!",
+        message: "Player ID is required to update details!",
         status: 400,
       });
     }
@@ -67,7 +67,7 @@ const updatePlayer = async (req, res, next) => {
       const updateState = await playerForUpdate.save();
       if (!updateState) {
         return res.json({
-          message: "Player could'nt Update!",
+          message: "Player couldn't be updated!",
           status: 500,
         });
       } else {
@@ -89,12 +89,12 @@ const deletePlayer = async (req, res, next) => {
 
     if (!playerForDelete) {
       return res.json({
-        message: "Player not Found!",
+        message: "Player not found!",
         status: 404,
       });
     } else {
       return res.json({
-        message: "Player Deleted successfully!",
+        message: "Player deleted successfully!",
         status: 200,
       });
     }
@@ -108,7 +108,7 @@ const getPlayerDescription = async (req, res, next) => {
     const id = req.params.id;
     if (!id) {
       return res.json({
-        message: "Player's id is reqired!",
+        message: "Player ID is required!",
         status: 402,
       });
     }
@@ -162,14 +162,14 @@ const filteringAndSorting = async (req, res, next) => {
 
     if (!result.length) {
       return res.json({
-        page : pageNumber,
-        message : 'Data not found!',
-        players : result
+        page: pageNumber,
+        message: "No players found!",
+        players: result,
       });
     } else {
       return res.json({
-        page : pageNumber,
-        players : result
+        page: pageNumber,
+        players: result,
       });
     }
   } catch (error) {
