@@ -18,6 +18,6 @@ Router.post("/", validateBody(player_create_scheme), createPlayer);
 Router.get("/:id/description", getPlayerDescription);
 Router.patch("/:id", validateBody(player_update_schema), updatePlayer);
 Router.delete("/:id", deletePlayer);
-Router.get("/", filteringAndSorting); //URI Demo = /players?sortBy=salary&name=virat&team=rcb
+Router.get("/", filteringAndSorting); //URI Demo = /players?sortBy=salary&name=virat&team=rcb&page=1
 
 module.exports = Router;

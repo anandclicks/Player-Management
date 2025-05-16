@@ -38,8 +38,8 @@ const updatePlayer = async (req, res, next) => {
     const id = req.params?.id;
     if (!id) {
       return res.json({
-        message: "Player id is required to update details!",
-        status: 403,
+        message: "Player's id is required to update details!",
+        status: 400,
       });
     }
 
@@ -90,7 +90,7 @@ const deletePlayer = async (req, res, next) => {
     if (!playerForDelete) {
       return res.json({
         message: "Player not Found!",
-        status: 400,
+        status: 404,
       });
     } else {
       return res.json({
@@ -118,7 +118,7 @@ const getPlayerDescription = async (req, res, next) => {
     if (!descriptionOfPlayer) {
       return res.json({
         message: "Player not found!",
-        status: 400,
+        status: 404,
       });
     } else {
       return res.json(descriptionOfPlayer);
@@ -162,14 +162,13 @@ const filteringAndSorting = async (req, res, next) => {
 
     if (!result.length) {
       return res.json({
-        message: "Data not found!",
-        status: 400,
+        page : pageNumber,
+        message : 'Data not found!',
+        players : result
       });
     } else {
       return res.json({
         page : pageNumber,
-        limit : limit,
-        total : await playerModel.countDocuments(),
         players : result
       });
     }
