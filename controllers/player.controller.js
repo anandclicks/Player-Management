@@ -1,3 +1,4 @@
+const playerModel = require("../models/player.model");
 const playerModal = require("../models/player.model");
 const { v4: uuidv4 } = require("uuid");
 
@@ -35,7 +36,7 @@ const createPlayer = async (req, res, next) => {
 
 const updatePlayer = async (req, res, next) => {
   try {
-    const playerId = req.params.id;
+    const playerId = req.params?.id;
     if (!playerId) {
       return res.json({
         message: "Player id is required to update details!",
@@ -82,4 +83,85 @@ const updatePlayer = async (req, res, next) => {
   }
 };
 
-module.exports = { createPlayer, updatePlayer };
+const deletePlayer = async (req, res, next) => {
+  try {
+    const playerId = req.params?.id;
+    const playerForDelete = await playerModel.findOneAndDelete({ playerId });
+
+    if (!playerForDelete) {
+      return res.json({
+        message: "Player not Found!",
+        status: 400,
+      });
+    } else {
+      return res.json({
+        message: "Player Deleted successfully!",
+        status: 200,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getPlayerDescription = async (req, res, next) => {
+  try {
+    const playerId = req.params.id;
+    if (!playerId) {
+      return res.json({
+        message: "Player's id is reqired!",
+        status: 402,
+      });
+    }
+    const descriptionOfPlayer = await playerModal
+      .findOne({ playerId })
+      .select("-_id");
+    if (!descriptionOfPlayer) {
+      return res.json({
+        message: "Player not found!",
+        status: 400,
+      });
+    } else {
+      return res.json(descriptionOfPlayer);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const filteringAndSorting = async (req, res, next) => {
+  try {
+    // filtering options
+    let filterOption = {};
+    if (req.query.team) {
+      filterOption.team = { $regex: req.query.team, $options: "i" };
+    }
+    if (req.query.name) {
+      filterOption.name = { $regex: req.query.name, $options: "i" };
+    }
+
+    // sorting options
+    let sortOptions = {};
+    const sortBy = req.query.sortBy;
+    const sortOrder = req.query.order == "decs" ? -1 : 1;
+    if (sortBy == "runs" || sortBy == "salary") {
+      sortOptions[sortBy] = sortOrder;
+    }
+
+    const result = await playerModal
+      .find(filterOption)
+      .sort(sortBy)
+      .select("-_id");
+    return res.json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  createPlayer,
+  updatePlayer,
+  deletePlayer,
+  getPlayerDescription,
+  filteringAndSorting,
+};
