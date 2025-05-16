@@ -6,7 +6,7 @@ const player_create_scheme = joi.object({
   country: joi.string().required(),
   runs: joi.number().required(),
   image: joi.string().uri().required(),
-  role: joi.string().valid("Batsman", "Bowler", "All-rounder").required(),
+  role: joi.string().insensitive().valid("Batsman", "Bowler", "All-rounder").required(),
   salary: joi.number().integer().positive().required(),
 });
 
@@ -16,7 +16,7 @@ const player_update_schema = joi.object({
   country: joi.string(),
   runs: joi.number(),
   image: joi.string().uri(),
-  role: joi.string().valid("Batsman", "Bowler", "All-rounder"),
+  role: joi.string().insensitive().valid("Batsman", "Bowler", "All-rounder"),
   salary: joi.number().integer().positive(),
 });
 
