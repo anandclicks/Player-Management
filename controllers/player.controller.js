@@ -17,15 +17,13 @@ const createPlayer = async (req, res, next) => {
       salary,
     });
     if (!status) {
-      return res.json({
+      return res.status(500).json({
         message: "Player couldn't be created! Please try again.",
-        status: 500,
       });
     }
     if (status) {
-      return res.json({
+      return res.status(201).json({
         message: "Player created successfully!",
-        status: 200,
       });
     }
   } catch (error) {
@@ -37,17 +35,15 @@ const updatePlayer = async (req, res, next) => {
   try {
     const id = req.params?.id;
     if (!id) {
-      return res.json({
+      return res.status(400).json({
         message: "Player ID is required to update details!",
-        status: 400,
       });
     }
 
     const playerForUpdate = await playerModel.findOne({ id });
     if (!playerForUpdate) {
-      return res.json({
+      return res.status(404).json({
         message: "Player not found!",
-        status: 404,
       });
     } else {
       const fieldsForUpdate = [
@@ -66,9 +62,8 @@ const updatePlayer = async (req, res, next) => {
       });
       const updateState = await playerForUpdate.save();
       if (!updateState) {
-        return res.json({
+        return res.status(500).json({
           message: "Player couldn't be updated!",
-          status: 500,
         });
       } else {
         return res.json({
@@ -88,14 +83,12 @@ const deletePlayer = async (req, res, next) => {
     const playerForDelete = await playerModel.findOneAndDelete({ id });
 
     if (!playerForDelete) {
-      return res.json({
+      return res.status(404).json({
         message: "Player not found!",
-        status: 404,
       });
     } else {
-      return res.json({
+      return res.status(201).json({
         message: "Player deleted successfully!",
-        status: 200,
       });
     }
   } catch (error) {
@@ -107,18 +100,16 @@ const getPlayerDescription = async (req, res, next) => {
   try {
     const id = req.params.id;
     if (!id) {
-      return res.json({
+      return res.status(400).json({
         message: "Player ID is required!",
-        status: 402,
       });
     }
     const descriptionOfPlayer = await playerModel
       .findOne({ id })
       .select("-_id");
     if (!descriptionOfPlayer) {
-      return res.json({
+      return res.status(404).json({
         message: "Player not found!",
-        status: 404,
       });
     } else {
       return res.json(descriptionOfPlayer);
@@ -161,13 +152,13 @@ const filteringAndSorting = async (req, res, next) => {
       .select("-_id");
 
     if (!result.length) {
-      return res.json({
+      return res.status(404).json({
         page: pageNumber,
         message: "No players found!",
         players: result,
       });
     } else {
-      return res.json({
+      return res.status(200).json({
         page: pageNumber,
         players: result,
       });
