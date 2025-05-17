@@ -1,8 +1,8 @@
-Project Name: IPL Players Management API
-
-GitHub Repository: https://github.com/your-username/ipl-management-api
-
+Assignment Name: IPL Players Management API
 Tech Stack: Node.js, Express.js, MongoDB, Joi
+
+GitHub Repository: https://github.com/anandclicks/Player-Management.git
+Run command - node app.js
 
 Features Implemented:
 - Player CRUD APIs
