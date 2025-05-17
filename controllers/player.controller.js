@@ -141,7 +141,7 @@ const filteringAndSorting = async (req, res, next) => {
 
     // sorting options
     let sortOptions = {};
-    const sortBy = req.query.sortBy;
+    const sortBy = req.query.sortby;
     const sortOrder = req.query.order == "desc" ? -1 : 1;
     if (sortBy == "runs" || sortBy == "salary") {
       sortOptions[sortBy] = sortOrder;

@@ -1,0 +1,16 @@
+Project Name: IPL Players Management API
+
+GitHub Repository: https://github.com/your-username/ipl-management-api
+
+Tech Stack: Node.js, Express.js, MongoDB, Joi
+
+Features Implemented:
+- Player CRUD APIs
+- Pagination, Filtering by team
+- Sorting by runs/salary
+- Search by name
+- Input validation using Joi
+- Proper error handling
+
+Thank you for the opportunity. Looking forward to your feedback!
+Date: 17/05/2025
