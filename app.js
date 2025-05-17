@@ -6,8 +6,13 @@ const connect_db = require("./helpers/db");
 const globalErrorHandler = require("./middleware/errorHandler");
 const playerRoutes = require("./Routes/player.route.js");
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// for handling encryption type multipart/form-data 
+const multer = require('multer')
+const upload = multer()
+
+app.use(upload.none())
+app.use(express.json())
+app.use(express.urlencoded({extended : true}))
 app.use("/players", playerRoutes);
 
 app.use(globalErrorHandler);
