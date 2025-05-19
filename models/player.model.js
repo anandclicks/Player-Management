@@ -11,7 +11,6 @@ const playerModal = new mongoose.Schema(
     role: { type: String, enum: ["Batsman", "Bowler", "All-rounder"] },
     salary: { type: Number, required: true },
   },
-  { timestamps: true }
 );
 
 module.exports = mongoose.model("playerModal", playerModal);
