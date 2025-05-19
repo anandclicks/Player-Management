@@ -160,6 +160,8 @@ const filteringAndSorting = async (req, res, next) => {
     } else {
       return res.status(200).json({
         page: pageNumber,
+        limit: limit,
+        total: await playerModel.countDocuments(),
         players: result,
       });
     }
